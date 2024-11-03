@@ -1,0 +1,255 @@
+[gd_scene load_steps=11 format=3 uid="uid://7whw0trbbmhl"]
+
+[ext_resource type="FontFile" uid="uid://bdv54xqgn3oti" path="res://Assets/Fonts/beyond-wonderland/Beyond Wonderland.ttf" id="1_j5rc4"]
+[ext_resource type="Script" path="res://menu_scene/bottom_wall.gd" id="2_ptffp"]
+[ext_resource type="PackedScene" uid="uid://vooqtgl4ebx4" path="res://bumper/bumper.tscn" id="3_nkotf"]
+[ext_resource type="PackedScene" uid="uid://c0lbvbgbnckk5" path="res://ball.tscn" id="4_ogcsh"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jj3yq"]
+size = Vector3(50, 10, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2nndc"]
+size = Vector3(50, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ge4oj"]
+size = Vector3(50, 1, 50)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fpabt"]
+size = Vector3(50, 1, 50)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6x23k"]
+size = Vector3(1, 10, 50)
+
+[sub_resource type="BoxMesh" id="BoxMesh_k15n2"]
+size = Vector3(1, 10, 50)
+
+[node name="Menu" type="Node3D"]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 107.0
+offset_right = 246.0
+offset_bottom = 190.0
+theme_override_fonts/font = ExtResource("1_j5rc4")
+text = "start"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1067.0
+offset_bottom = 241.0
+theme_override_fonts/normal_font = ExtResource("1_j5rc4")
+theme_override_font_sizes/normal_font_size = 64
+text = "Handville 2:
+The Grand Handwaving Pinball Competition"
+metadata/_edit_group_ = true
+
+[node name="pinball machine" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0, 0)
+
+[node name="top wall" type="StaticBody3D" parent="pinball machine"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, -25)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="pinball machine/top wall"]
+shape = SubResource("BoxShape3D_jj3yq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="pinball machine/top wall"]
+mesh = SubResource("BoxMesh_2nndc")
+
+[node name="bottom wall" type="Area3D" parent="pinball machine"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 25)
+script = ExtResource("2_ptffp")
+bounciness = 50.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="pinball machine/bottom wall"]
+shape = SubResource("BoxShape3D_jj3yq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="pinball machine/bottom wall"]
+mesh = SubResource("BoxMesh_2nndc")
+
+[node name="pinball ground" type="StaticBody3D" parent="pinball machine"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="pinball machine/pinball ground"]
+shape = SubResource("BoxShape3D_ge4oj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="pinball machine/pinball ground"]
+mesh = SubResource("BoxMesh_fpabt")
+
+[node name="left wall" type="StaticBody3D" parent="pinball machine"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="pinball machine/left wall"]
+shape = SubResource("BoxShape3D_6x23k")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="pinball machine/left wall"]
+mesh = SubResource("BoxMesh_k15n2")
+
+[node name="right wall" type="StaticBody3D" parent="pinball machine"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="pinball machine/right wall"]
+shape = SubResource("BoxShape3D_6x23k")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="pinball machine/right wall"]
+mesh = SubResource("BoxMesh_k15n2")
+
+[node name="bumpers" type="Node3D" parent="pinball machine"]
+
+[node name="long_row5" type="Node3D" parent="pinball machine/bumpers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 18.2611)
+
+[node name="Bumper3" parent="pinball machine/bumpers/long_row5" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper4" parent="pinball machine/bumpers/long_row5" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper5" parent="pinball machine/bumpers/long_row5" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper6" parent="pinball machine/bumpers/long_row5" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper7" parent="pinball machine/bumpers/long_row5" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper8" parent="pinball machine/bumpers/long_row5" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 1, 0)
+bounciness = 50.0
+
+[node name="long_row4" type="Node3D" parent="pinball machine/bumpers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.43006)
+
+[node name="Bumper3" parent="pinball machine/bumpers/long_row4" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper4" parent="pinball machine/bumpers/long_row4" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper5" parent="pinball machine/bumpers/long_row4" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper6" parent="pinball machine/bumpers/long_row4" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper7" parent="pinball machine/bumpers/long_row4" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper8" parent="pinball machine/bumpers/long_row4" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 1, 0)
+bounciness = 50.0
+
+[node name="long_row3" type="Node3D" parent="pinball machine/bumpers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.197409)
+
+[node name="Bumper3" parent="pinball machine/bumpers/long_row3" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper4" parent="pinball machine/bumpers/long_row3" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper5" parent="pinball machine/bumpers/long_row3" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper6" parent="pinball machine/bumpers/long_row3" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper7" parent="pinball machine/bumpers/long_row3" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper8" parent="pinball machine/bumpers/long_row3" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 1, 0)
+bounciness = 50.0
+
+[node name="long_row2" type="Node3D" parent="pinball machine/bumpers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8.12231)
+
+[node name="Bumper3" parent="pinball machine/bumpers/long_row2" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper4" parent="pinball machine/bumpers/long_row2" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper5" parent="pinball machine/bumpers/long_row2" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper6" parent="pinball machine/bumpers/long_row2" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper7" parent="pinball machine/bumpers/long_row2" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper8" parent="pinball machine/bumpers/long_row2" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 1, 0)
+bounciness = 50.0
+
+[node name="long_row" type="Node3D" parent="pinball machine/bumpers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -17.2573)
+
+[node name="Bumper3" parent="pinball machine/bumpers/long_row" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper4" parent="pinball machine/bumpers/long_row" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper5" parent="pinball machine/bumpers/long_row" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper6" parent="pinball machine/bumpers/long_row" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper7" parent="pinball machine/bumpers/long_row" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1, 0)
+bounciness = 50.0
+
+[node name="Bumper8" parent="pinball machine/bumpers/long_row" instance=ExtResource("3_nkotf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 1, 0)
+bounciness = 50.0
+
+[node name="RigidBody3D" parent="." instance=ExtResource("4_ogcsh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.93677, 11.2001, -14.1286)
+linear_velocity = Vector3(10, 10, 10)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.422618, 0.906308, 0, -0.906308, 0.422618, 0, 37.6619, 28.6979)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 14.8397, -2.40192)
+
+[connection signal="body_entered" from="pinball machine/bottom wall" to="pinball machine/bottom wall" method="_on_body_entered"]
+[connection signal="body_shape_entered" from="pinball machine/bottom wall" to="pinball machine/bottom wall" method="_on_body_shape_entered"]

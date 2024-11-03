@@ -18,6 +18,10 @@ var landmark_sphere: PackedScene = preload("res://hand/hand_landmark.tscn")
 var hand_landmarks: Array[HandLandmark] = []
 var hand_lines: Array[MeshInstance3D] = []
 var bones: Array[int] = []
+
+var mod_landmarks: Array[bool] = []
+var hand_landmark_mods: Array[Vector3] = []
+
 var skeleton
 var handz: Node3D
 var orientation: String
@@ -33,6 +37,13 @@ func _init(hand_bones: Array[int], skeleton_bones: Skeleton3D, hands: Node3D, or
 func _ready() -> void:
 	_create_hand_landmark_spheres()
 	_create_hand_lines()
+	
+	hand_landmark_mods.resize(NUM_LANDMARKS)
+	mod_landmarks.resize(NUM_LANDMARKS)
+	
+	for id in range(NUM_LANDMARKS):
+		hand_landmark_mods[id] = _randomize_pos_modification()
+		mod_landmarks[id] = false
 
 func _create_hand_landmark_spheres() -> void:
 	for i in range(NUM_LANDMARKS):
@@ -90,6 +101,21 @@ func parse_hand_landmarks_from_data(hand_data: Array) -> void:
 		# Get the current bone's global transform
 		#skeleton.set_bone_pose_position(bones[lm_id], pos_xyz)
 		
+		if (mod_landmarks[lm_id]):
+			pos_xyz *= hand_landmark_mods[lm_id]
+		
+		match lm_id:
+			0:
+				#skeleton.set_bone_pose_position(bones[lm_id], pos_xyz)
+				handz.global_position = pos_xyz
+				base_pos = pos_xyz
+			5:
+				index_palm_pos = pos_xyz
+			9:
+				middle_palm_pos = pos_xyz
+			17:
+				pinky_palm_pos = pos_xyz
+		
 		if funky_hand:
 			# Assuming 'skeleton' is your Skeleton3D node and 'bone_idx' is the index of the bone you want to move.
 			# 1. Define the desired global transform
@@ -115,21 +141,6 @@ func parse_hand_landmarks_from_data(hand_data: Array) -> void:
 
 			# 5. Apply the local transform to the bone
 			skeleton.set_bone_pose(bone_idx, local_transform)
-			
-		if (lm_id == 0):
-			#skeleton.set_bone_pose_position(bones[lm_id], pos_xyz)
-			handz.global_position = pos_xyz
-			base_pos = pos_xyz
-			
-		if (lm_id == 5):
-			index_palm_pos = pos_xyz
-			
-		if (lm_id == 9):
-			middle_palm_pos = pos_xyz
-			
-		if (lm_id == 17):
-			pinky_palm_pos = pos_xyz
-
 
 		# Update the visual position of the hand landmark
 		_update_hand_landmark(lm_id, pos_xyz)
@@ -150,3 +161,16 @@ func parse_hand_landmarks_from_data(hand_data: Array) -> void:
 
 func _activate_funky_hands() -> void:
 	funky_hand = true
+	
+func _mod_landmark_of_choice(id: int) -> void:
+	mod_landmarks[id] = true
+	
+func _randomize_pos_modification() -> Vector3:
+	var min_value = 0
+	var max_value = 10
+	
+	var x = randf_range(min_value, max_value)
+	var y = randf_range(min_value, max_value)
+	var z = randf_range(min_value, max_value)
+	
+	return Vector3(x, y, z)

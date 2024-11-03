@@ -117,3 +117,9 @@ func _process(_delta: float) -> void:
 			
 		if hands_data["right"] != null:
 			right_hand.parse_hand_landmarks_from_data(hands_data["right"])
+
+func _mod_hand_landmarks(id: int, left: bool) -> void:
+	if (left):
+		left_hand._mod_landmark_of_choice(id)
+	else:
+		right_hand._mod_landmark_of_choice(id)

@@ -12,6 +12,8 @@ func _process(delta):
 
 
 func _on_body_entered(body):
+	print("powerup")
 	if body is ball:
 		body._apply_powerup(power_type)
+		self.queue_free()
 	pass # Replace with function body.

@@ -24,7 +24,7 @@ size = Vector3(100, 1, 100)
 size = Vector3(100, 1, 100)
 
 [node name="PinballWorld" type="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 0.996195, 0.0871557, 0, -0.0871557, 0.996195, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_62dif")
@@ -50,7 +50,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 mesh = SubResource("BoxMesh_stpyu")
 
 [node name="Bumper" parent="." instance=ExtResource("1_r6qni")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 0)
 bounciness = 5.0
+
+[node name="powerup" parent="." instance=ExtResource("3_ksbol")]
+transform = Transform3D(1, 0, 0, 0, 0.996194, -0.0871556, 0, 0.0871556, 0.996194, 0.392516, -0.5, -1.05842)
+power_type = "grow"
 
 [connection signal="body_entered" from="Bumper" to="Bumper" method="_on_body_entered"]

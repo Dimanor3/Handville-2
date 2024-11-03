@@ -4,7 +4,7 @@
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_fed0n"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_3dfwg"]
+[sub_resource type="SphereMesh" id="SphereMesh_8idam"]
 
 [node name="powerup" type="Area3D"]
 script = ExtResource("1_l3ws5")
@@ -13,6 +13,6 @@ script = ExtResource("1_l3ws5")
 shape = SubResource("SphereShape3D_fed0n")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("SphereMesh_3dfwg")
+mesh = SubResource("SphereMesh_8idam")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

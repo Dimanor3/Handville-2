@@ -23,9 +23,8 @@ var rightyBones: Array[int]
 func _ready() -> void:
 	server = UDPServer.new()
 	server.listen(PORT)
-	
-	rigged_left_hand = get_node("/root/World/lefthand")
-	rigged_right_hand = get_node("/root/World/righthand")
+	rigged_left_hand = get_tree().current_scene.get_node("lefthand")
+	rigged_right_hand = get_tree().current_scene.get_node("righthand")
 	skeleton_left = rigged_left_hand.get_node("Armature/Skeleton3D")
 	skeleton_right = rigged_right_hand.get_node("Armature/Skeleton3D")
 	

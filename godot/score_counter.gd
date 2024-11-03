@@ -11,7 +11,7 @@ func _ready():
 func _player_point():
 	player_score += 1
 	print(player_score)
-	
+	ScoreUpgrades._update_score(player_score)
 	pass
 	
 func _cup_point():

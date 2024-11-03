@@ -1,7 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://bifbs5sm3l0if"]
+[gd_scene load_steps=10 format=3 uid="uid://bifbs5sm3l0if"]
 
 [ext_resource type="Script" path="res://hand/hand_tracking.gd" id="1_vbggk"]
 [ext_resource type="PackedScene" uid="uid://y2aw7snpteqm" path="res://Assets/Model/Hand/handV5.fbx" id="2_hfc65"]
+[ext_resource type="PlaneMesh" uid="uid://opdpqforayot" path="res://Assets/Model/Ground/ground.tres" id="3_63xi8"]
+[ext_resource type="PackedScene" uid="uid://d18he52upfluw" path="res://ball.tscn" id="3_pmubh"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3lt1c"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -17,10 +19,12 @@ sky = SubResource("Sky_d7h00")
 ambient_light_source = 3
 tonemap_mode = 2
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_t1750"]
-margin = 0.0
-radius = 0.08
-height = 0.3
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cq2b7"]
+radius = 0.09
+height = 3.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ix4o3"]
+size = Vector3(1, 0.01, 1)
 
 [node name="World" type="Node3D"]
 
@@ -32,7 +36,7 @@ transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75
 shadow_enabled = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 17)
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 25, 65)
 
 [node name="HandTracking" type="Node3D" parent="."]
 script = ExtResource("1_vbggk")
@@ -43,8 +47,7 @@ transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, -12.8222, 0, 0)
 [node name="RigidBody3D" type="RigidBody3D" parent="lefthand"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="lefthand/RigidBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.103977, 0)
-shape = SubResource("CapsuleShape3D_t1750")
+shape = SubResource("CapsuleShape3D_cq2b7")
 
 [node name="righthand" parent="." instance=ExtResource("2_hfc65")]
 transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
@@ -52,5 +55,16 @@ transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
 [node name="RigidBody3D" type="RigidBody3D" parent="righthand"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="righthand/RigidBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.103977, 0)
-shape = SubResource("CapsuleShape3D_t1750")
+shape = SubResource("CapsuleShape3D_cq2b7")
+
+[node name="RigidBody3D" parent="." instance=ExtResource("3_pmubh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.58674)
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+transform = Transform3D(1000, 0, 0, 0, 1000, 0, 0, 0, 1000, -10, -25, -3)
+mesh = ExtResource("3_63xi8")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
+shape = SubResource("BoxShape3D_ix4o3")

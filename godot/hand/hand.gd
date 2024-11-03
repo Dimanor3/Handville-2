@@ -22,6 +22,8 @@ var skeleton
 var handz: Node3D
 var orientation: String
 
+var funky_hand: bool = true
+
 func _init(hand_bones: Array[int], skeleton_bones: Skeleton3D, hands: Node3D, orient: String) -> void:
 	bones = hand_bones
 	skeleton = skeleton_bones
@@ -68,6 +70,7 @@ func parse_hand_landmarks_from_data(hand_data: Array) -> void:
 	var base_pos: Vector3
 	var index_palm_pos: Vector3
 	var pinky_palm_pos: Vector3
+	var middle_palm_pos: Vector3
 	
 	for lm_id in range(NUM_LANDMARKS):
 		var lm_data = hand_data[lm_id]
@@ -87,32 +90,31 @@ func parse_hand_landmarks_from_data(hand_data: Array) -> void:
 		# Get the current bone's global transform
 		#skeleton.set_bone_pose_position(bones[lm_id], pos_xyz)
 		
-		# Assuming 'skeleton' is your Skeleton3D node and 'bone_idx' is the index of the bone you want to move.
+		if funky_hand:
+			# Assuming 'skeleton' is your Skeleton3D node and 'bone_idx' is the index of the bone you want to move.
+			# 1. Define the desired global transform
+			var desired_global_transform = Transform3D()
+			desired_global_transform.origin = pos_xyz  # Replace with your desired global position
 
-		# 1. Define the desired global transform
-		var desired_global_transform = Transform3D()
-		desired_global_transform.origin = pos_xyz  # Replace with your desired global position
+			# 2. Convert the desired transform to model space
+			var desired_model_transform = skeleton.global_transform.affine_inverse() * desired_global_transform
 
-		# 2. Convert the desired transform to model space
-		var desired_model_transform = skeleton.global_transform.affine_inverse() * desired_global_transform
+			# 3. Retrieve the parent bone's model space transform
+			var parent_bone_idx = skeleton.get_bone_parent(bone_idx)
+			var parent_model_transform: Transform3D
 
-		# 3. Retrieve the parent bone's model space transform
-		var parent_bone_idx = skeleton.get_bone_parent(bone_idx)
-		var parent_model_transform: Transform3D
+			if parent_bone_idx == -1:
+				# The bone has no parent (root bone), use the identity transform
+				parent_model_transform = Transform3D.IDENTITY
+			else:
+				# The bone has a parent bone; get the parent's model space transform
+				parent_model_transform = skeleton.get_bone_global_pose(parent_bone_idx)
 
-		if parent_bone_idx == -1:
-			# The bone has no parent (root bone), use the identity transform
-			parent_model_transform = Transform3D.IDENTITY
-		else:
-			# The bone has a parent bone; get the parent's model space transform
-			parent_model_transform = skeleton.get_bone_global_pose(parent_bone_idx)
+			# 4. Calculate the bone's local transform
+			var local_transform = parent_model_transform.affine_inverse() * desired_model_transform
 
-		# 4. Calculate the bone's local transform
-		var local_transform = parent_model_transform.affine_inverse() * desired_model_transform
-
-		# 5. Apply the local transform to the bone
-		skeleton.set_bone_pose(bone_idx, local_transform)
-
+			# 5. Apply the local transform to the bone
+			skeleton.set_bone_pose(bone_idx, local_transform)
 			
 		if (lm_id == 0):
 			#skeleton.set_bone_pose_position(bones[lm_id], pos_xyz)
@@ -121,6 +123,9 @@ func parse_hand_landmarks_from_data(hand_data: Array) -> void:
 			
 		if (lm_id == 5):
 			index_palm_pos = pos_xyz
+			
+		if (lm_id == 9):
+			middle_palm_pos = pos_xyz
 			
 		if (lm_id == 17):
 			pinky_palm_pos = pos_xyz
@@ -132,10 +137,16 @@ func parse_hand_landmarks_from_data(hand_data: Array) -> void:
 	var index_vector = index_palm_pos - base_pos
 	var pinky_vector = pinky_palm_pos - base_pos
 	
+	var middle_vector = middle_palm_pos.cross(base_pos)
+	
 	var final_cross = pinky_vector.cross(index_vector)
 	
 	handz.look_at(final_cross)
+	#handz.look_at(middle_vector)
 	#handz.rotate_y(deg_to_rad(90))
 	
 	#if (orientation == "right"):
 		#handz.scale = Vector3(70, 70, 70)
+
+func _activate_funky_hands() -> void:
+	funky_hand = true

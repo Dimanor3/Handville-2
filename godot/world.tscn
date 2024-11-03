@@ -1,10 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://bifbs5sm3l0if"]
+[gd_scene load_steps=6 format=3 uid="uid://bifbs5sm3l0if"]
 
 [ext_resource type="Script" path="res://hand/hand_tracking.gd" id="1_vbggk"]
 [ext_resource type="PackedScene" uid="uid://y2aw7snpteqm" path="res://Assets/Model/Hand/handV5.fbx" id="2_hfc65"]
-[ext_resource type="PlaneMesh" uid="uid://opdpqforayot" path="res://Assets/Model/Ground/ground.tres" id="3_63xi8"]
-[ext_resource type="Script" path="res://paddle.gd" id="3_cy65n"]
-[ext_resource type="PackedScene" uid="uid://c0lbvbgbnckk5" path="res://ball.tscn" id="3_pmubh"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3lt1c"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -19,21 +16,6 @@ background_color = Color(0.5518, 0.75472, 0.89, 1)
 sky = SubResource("Sky_d7h00")
 ambient_light_source = 3
 tonemap_mode = 2
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cq2b7"]
-radius = 5.0
-height = 40.0
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_glspl"]
-radius = 5.0
-height = 40.0
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_85ica"]
-radius = 5.0
-height = 40.0
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ix4o3"]
-size = Vector3(1, 0.01, 1)
 
 [node name="World" type="Node3D"]
 
@@ -52,60 +34,6 @@ script = ExtResource("1_vbggk")
 
 [node name="lefthand" parent="." instance=ExtResource("2_hfc65")]
 transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, -12.8222, 0, 0)
-rotation_order = 1
-
-[node name="RigidBody3D2" type="RigidBody3D" parent="lefthand"]
-transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 1.99676e-06, 0.2, 0)
-axis_lock_linear_x = true
-axis_lock_linear_y = true
-axis_lock_linear_z = true
-axis_lock_angular_x = true
-axis_lock_angular_y = true
-axis_lock_angular_z = true
-gravity_scale = 0.0
-contact_monitor = true
-max_contacts_reported = 1
-script = ExtResource("3_cy65n")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="lefthand/RigidBody3D2"]
-shape = SubResource("CapsuleShape3D_cq2b7")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="lefthand/RigidBody3D2"]
-mesh = SubResource("CapsuleMesh_glspl")
 
 [node name="righthand" parent="." instance=ExtResource("2_hfc65")]
 transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
-rotation_order = 1
-
-[node name="RigidBody3D3" type="RigidBody3D" parent="righthand"]
-transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0.2, 0)
-axis_lock_linear_x = true
-axis_lock_linear_y = true
-axis_lock_linear_z = true
-axis_lock_angular_x = true
-axis_lock_angular_y = true
-axis_lock_angular_z = true
-gravity_scale = 0.0
-contact_monitor = true
-max_contacts_reported = 1
-script = ExtResource("3_cy65n")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="righthand/RigidBody3D3"]
-shape = SubResource("CapsuleShape3D_cq2b7")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="righthand/RigidBody3D3"]
-mesh = SubResource("CapsuleMesh_85ica")
-
-[node name="ball" parent="." instance=ExtResource("3_pmubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.58674)
-
-[node name="Ground" type="MeshInstance3D" parent="."]
-transform = Transform3D(1000, 0, 0, 0, 1000, 0, 0, 0, 1000, -10, -25, -3)
-mesh = ExtResource("3_63xi8")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
-shape = SubResource("BoxShape3D_ix4o3")
-
-[connection signal="body_entered" from="righthand/RigidBody3D3" to="righthand/RigidBody3D3" method="_on_body_entered"]

@@ -13,8 +13,8 @@ collision_layer = 2
 gravity_scale = 0.0
 freeze = true
 freeze_mode = 1
-max_contacts_reported = 1
 contact_monitor = true
+max_contacts_reported = 1
 script = ExtResource("1_v35cl")
 sphere = NodePath("Sphere")
 

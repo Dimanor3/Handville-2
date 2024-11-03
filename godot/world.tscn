@@ -7,13 +7,13 @@
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
 ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
 
-[sub_resource type="Sky" id="Sky_d7h00"]
+[sub_resource type="Sky" id="Sky_fu7wv"]
 sky_material = SubResource("ProceduralSkyMaterial_3lt1c")
 
 [sub_resource type="Environment" id="Environment_jiyc6"]
 background_mode = 1
 background_color = Color(0.5518, 0.75472, 0.89, 1)
-sky = SubResource("Sky_d7h00")
+sky = SubResource("Sky_fu7wv")
 ambient_light_source = 3
 tonemap_mode = 2
 
@@ -32,7 +32,7 @@ transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75
 shadow_enabled = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 17)
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 5, 17)
 
 [node name="HandTracking" type="Node3D" parent="."]
 script = ExtResource("1_vbggk")

@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://vooqtgl4ebx4"]
+
+[ext_resource type="Script" path="res://bumper/bumper.gd" id="1_lwtt1"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_0xjhq"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_2akts"]
+
+[node name="Bumper" type="Area3D"]
+script = ExtResource("1_lwtt1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_0xjhq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_2akts")

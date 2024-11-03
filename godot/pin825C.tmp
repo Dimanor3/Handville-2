@@ -1,0 +1,52 @@
+[gd_scene load_steps=8 format=3 uid="uid://btl2xj8lvx1by"]
+
+[ext_resource type="PackedScene" uid="uid://vooqtgl4ebx4" path="res://bumper/bumper.tscn" id="1_r6qni"]
+[ext_resource type="PackedScene" uid="uid://c0lbvbgbnckk5" path="res://ball.tscn" id="2_83vjc"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_goewx"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_d7h00"]
+sky_material = SubResource("ProceduralSkyMaterial_goewx")
+
+[sub_resource type="Environment" id="Environment_62dif"]
+background_mode = 1
+background_color = Color(0.5518, 0.75472, 0.89, 1)
+sky = SubResource("Sky_d7h00")
+ambient_light_source = 3
+tonemap_mode = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jeydq"]
+size = Vector3(100, 1, 100)
+
+[sub_resource type="BoxMesh" id="BoxMesh_stpyu"]
+size = Vector3(100, 1, 100)
+
+[node name="PinballWorld" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_62dif")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 5, 17)
+
+[node name="pinball" parent="." instance=ExtResource("2_83vjc")]
+transform = Transform3D(0.999837, 0.0170471, -0.00597768, -0.0169964, 0.99982, 0.00842954, 0.00612032, -0.00832658, 0.999947, 0.255, 1.5, 2.225)
+
+[node name="floor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("BoxShape3D_jeydq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("BoxMesh_stpyu")
+
+[node name="Bumper" parent="." instance=ExtResource("1_r6qni")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)

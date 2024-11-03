@@ -17,6 +17,16 @@ var landmark_sphere: PackedScene = preload("res://hand/hand_landmark.tscn")
 
 var hand_landmarks: Array[HandLandmark] = []
 var hand_lines: Array[MeshInstance3D] = []
+var bones: Array[int] = []
+var skeleton
+var handz: Node3D
+var orientation: String
+
+func _init(hand_bones: Array[int], skeleton_bones, hands: Node3D, orient: String) -> void:
+	bones = hand_bones
+	skeleton = skeleton_bones
+	handz = hands
+	orientation = orient
 
 func _ready() -> void:
 	_create_hand_landmark_spheres()
@@ -50,9 +60,54 @@ func _update_hand_landmark(landmark_id: int, landmark_pos: Vector3) -> void:
 	lm.target = landmark_pos
 
 func parse_hand_landmarks_from_data(hand_data: Array) -> void:
+	# Set the global position of the skeleton if needed (e.g., following a target object)
+	 #skeleton.global_transform.origin = <target_position>
+	
+	var old_pos
+	var bone_pos
+	var base_pos: Vector3
+	var index_palm_pos: Vector3
+	var pinky_palm_pos: Vector3
+	
 	for lm_id in range(NUM_LANDMARKS):
 		var lm_data = hand_data[lm_id]
+		
+		# Process landmark data to get the target position
 		var pos_cam = Vector3(lm_data[0], lm_data[1], lm_data[2]) - Vector3.ONE * 0.5
 		var pos_xyz = Vector3(-pos_cam[0], -pos_cam[1], pos_cam[2]) * HAND_SCALE
 		pos_xyz.z += 12
+		
+		#if (orientation == "left"):
+			#continue
+		#else:
+			#continue
+		
+		# Get the current bone's global transform
+		#skeleton.set_bone_pose_position(bones[lm_id], pos_xyz)
+
+			
+		if (lm_id == 0):
+			#skeleton.set_bone_pose_position(bones[lm_id], pos_xyz)
+			handz.global_position = pos_xyz
+			base_pos = pos_xyz
+			
+		if (lm_id == 5):
+			index_palm_pos = pos_xyz
+			
+		if (lm_id == 17):
+			pinky_palm_pos = pos_xyz
+
+
+		# Update the visual position of the hand landmark
 		_update_hand_landmark(lm_id, pos_xyz)
+	
+	var index_vector = index_palm_pos - base_pos
+	var pinky_vector = pinky_palm_pos - base_pos
+	
+	var final_cross = pinky_vector.cross(index_vector)
+	
+	handz.look_at(final_cross)
+	#handz.rotate_y(deg_to_rad(90))
+	
+	#if (orientation == "right"):
+		#handz.scale = Vector3(70, 70, 70)

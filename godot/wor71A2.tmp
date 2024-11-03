@@ -1,7 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://bifbs5sm3l0if"]
+[gd_scene load_steps=6 format=3 uid="uid://bifbs5sm3l0if"]
 
 [ext_resource type="Script" path="res://hand/hand_tracking.gd" id="1_vbggk"]
-[ext_resource type="PackedScene" uid="uid://y2aw7snpteqm" path="res://Assets/Model/Hand/handV5.fbx" id="2_hfc65"]
+[ext_resource type="PackedScene" uid="uid://bqite0ril7x8u" path="res://Assets/Model/Hand/handV4.fbx" id="2_fedia"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3lt1c"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -16,11 +16,6 @@ background_color = Color(0.5518, 0.75472, 0.89, 1)
 sky = SubResource("Sky_d7h00")
 ambient_light_source = 3
 tonemap_mode = 2
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_t1750"]
-margin = 0.0
-radius = 0.08
-height = 0.3
 
 [node name="World" type="Node3D"]
 
@@ -37,20 +32,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 17)
 [node name="HandTracking" type="Node3D" parent="."]
 script = ExtResource("1_vbggk")
 
-[node name="lefthand" parent="." instance=ExtResource("2_hfc65")]
-transform = Transform3D(70, 0, 0, 0, 70, 0, 0, 0, 70, -12.8222, 0, 0)
+[node name="righthand" parent="." instance=ExtResource("2_fedia")]
+transform = Transform3D(-3.0598e-06, -70, 0, 70, -3.0598e-06, 0, 0, 0, 70, 0.0471396, 4.76837e-07, 0.0779946)
 
-[node name="RigidBody3D" type="RigidBody3D" parent="lefthand"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="lefthand/RigidBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.103977, 0)
-shape = SubResource("CapsuleShape3D_t1750")
-
-[node name="righthand" parent="." instance=ExtResource("2_hfc65")]
-transform = Transform3D(70, 0, 0, 0, 70, 0, 0, 0, 70, 0, 0, 0)
-
-[node name="RigidBody3D" type="RigidBody3D" parent="righthand"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="righthand/RigidBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.103977, 0)
-shape = SubResource("CapsuleShape3D_t1750")
+[node name="lefthand" parent="." instance=ExtResource("2_fedia")]
+transform = Transform3D(3.0598e-06, -70, 0, 70, 3.0598e-06, 0, 0, 0, -70, 0.103801, -0.00101042, -16.2821)

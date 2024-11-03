@@ -38,7 +38,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 17)
 script = ExtResource("1_vbggk")
 
 [node name="lefthand" parent="." instance=ExtResource("2_hfc65")]
-transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, -12.8222, 0, 0)
+transform = Transform3D(70, 0, 0, 0, 70, 0, 0, 0, 70, -12.8222, 0, 0)
 
 [node name="RigidBody3D" type="RigidBody3D" parent="lefthand"]
 
@@ -47,7 +47,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.103977, 0)
 shape = SubResource("CapsuleShape3D_t1750")
 
 [node name="righthand" parent="." instance=ExtResource("2_hfc65")]
-transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
+transform = Transform3D(70, 0, 0, 0, 70, 0, 0, 0, 70, 0, 0, 0)
 
 [node name="RigidBody3D" type="RigidBody3D" parent="righthand"]
 

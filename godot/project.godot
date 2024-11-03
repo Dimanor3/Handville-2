@@ -11,14 +11,13 @@ config_version=5
 [application]
 
 config/name="Handville 2"
-run/main_scene="res://pinball_world.tscn"
+run/main_scene="res://world.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
 LineRenderer="*res://utils/line_renderer.gd"
-ScoreCounter="*res://score_counter.gd"
 
 [rendering]
 

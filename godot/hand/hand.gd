@@ -22,7 +22,7 @@ var skeleton
 var handz: Node3D
 var orientation: String
 
-func _init(hand_bones: Array[int], skeleton_bones, hands: Node3D, orient: String) -> void:
+func _init(hand_bones: Array[int], skeleton_bones: Skeleton3D, hands: Node3D, orient: String) -> void:
 	bones = hand_bones
 	skeleton = skeleton_bones
 	handz = hands
@@ -72,6 +72,8 @@ func parse_hand_landmarks_from_data(hand_data: Array) -> void:
 	for lm_id in range(NUM_LANDMARKS):
 		var lm_data = hand_data[lm_id]
 		
+		var bone_idx = bones[lm_id]
+		
 		# Process landmark data to get the target position
 		var pos_cam = Vector3(lm_data[0], lm_data[1], lm_data[2]) - Vector3.ONE * 0.5
 		var pos_xyz = Vector3(-pos_cam[0], -pos_cam[1], pos_cam[2]) * HAND_SCALE
@@ -84,6 +86,32 @@ func parse_hand_landmarks_from_data(hand_data: Array) -> void:
 		
 		# Get the current bone's global transform
 		#skeleton.set_bone_pose_position(bones[lm_id], pos_xyz)
+		
+		# Assuming 'skeleton' is your Skeleton3D node and 'bone_idx' is the index of the bone you want to move.
+
+		# 1. Define the desired global transform
+		var desired_global_transform = Transform3D()
+		desired_global_transform.origin = pos_xyz  # Replace with your desired global position
+
+		# 2. Convert the desired transform to model space
+		var desired_model_transform = skeleton.global_transform.affine_inverse() * desired_global_transform
+
+		# 3. Retrieve the parent bone's model space transform
+		var parent_bone_idx = skeleton.get_bone_parent(bone_idx)
+		var parent_model_transform: Transform3D
+
+		if parent_bone_idx == -1:
+			# The bone has no parent (root bone), use the identity transform
+			parent_model_transform = Transform3D.IDENTITY
+		else:
+			# The bone has a parent bone; get the parent's model space transform
+			parent_model_transform = skeleton.get_bone_global_pose(parent_bone_idx)
+
+		# 4. Calculate the bone's local transform
+		var local_transform = parent_model_transform.affine_inverse() * desired_model_transform
+
+		# 5. Apply the local transform to the bone
+		skeleton.set_bone_pose(bone_idx, local_transform)
 
 			
 		if (lm_id == 0):
